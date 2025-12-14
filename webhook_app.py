@@ -5,9 +5,7 @@ import json
 from pathlib import Path
 
 from flask import Flask, request, jsonify
-import logging
-
-from worker import send_to_queue   # if you use queue
+import logging # if you use queue
 from ocr_worker import process_file  # run OCR pipeline directly
 
 # ----------------------

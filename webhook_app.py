@@ -5,19 +5,17 @@ import json
 from pathlib import Path
 
 from flask import Flask, request, jsonify
-import logging # if you use queue
+import logging
 from ocr_worker import process_file  # run OCR pipeline directly
 
 # ----------------------
-# Load keys
+# Load keys from ENV (Render compatible)
 # ----------------------
-KEYS_FILE = Path(__file__).resolve().parent / "twilio_keys.json"
+TWILIO_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 
-with open(KEYS_FILE, "r") as f:
-    KEYS = json.load(f)
-
-TWILIO_SID = KEYS["TWILIO_ACCOUNT_SID"]
-TWILIO_TOKEN = KEYS["TWILIO_AUTH_TOKEN"]
+if not TWILIO_SID or not TWILIO_TOKEN:
+    raise RuntimeError("Missing Twilio credentials in environment variables")
 
 # ----------------------
 # Flask app (ONE time only!)

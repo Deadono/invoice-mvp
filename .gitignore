@@ -1,0 +1,6 @@
+﻿service_account.json
+twilio_keys.json
+data/raw_messages/
+data/media/
+data/parsed/
+*.env

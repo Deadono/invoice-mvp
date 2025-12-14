@@ -1,0 +1,29 @@
+
+
+[2025-12-01T11:44:58.873274] Exception handling webhook for request:
+Traceback (most recent call last):
+  File "C:\Users\irfan\invoice-mvp\main.py", line 63, in whatsapp_webhook
+    resp = await client.get(media_url, auth=(TWILIO_SID, TWILIO_AUTH_TOKEN), follow_redirects=True, timeout=30.0)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\irfan\invoice-mvp\.venv\Lib\site-packages\httpx\_client.py", line 1768, in get
+    return await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "C:\Users\irfan\invoice-mvp\.venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\irfan\invoice-mvp\.venv\Lib\site-packages\httpx\_client.py", line 1627, in send
+    auth = self._build_request_auth(request, auth)
+  File "C:\Users\irfan\invoice-mvp\.venv\Lib\site-packages\httpx\_client.py", line 463, in _build_request_auth
+    self._auth if isinstance(auth, UseClientDefault) else self._build_auth(auth)
+                                                          ~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\irfan\invoice-mvp\.venv\Lib\site-packages\httpx\_client.py", line 449, in _build_auth
+    return BasicAuth(username=auth[0], password=auth[1])
+  File "C:\Users\irfan\invoice-mvp\.venv\Lib\site-packages\httpx\_auth.py", line 133, in __init__
+    self._auth_header = self._build_auth_header(username, password)
+                        ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\irfan\invoice-mvp\.venv\Lib\site-packages\httpx\_auth.py", line 140, in _build_auth_header
+    userpass = b":".join((to_bytes(username), to_bytes(password)))
+TypeError: sequence item 0: expected a bytes-like object, NoneType found

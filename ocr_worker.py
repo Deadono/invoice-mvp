@@ -28,16 +28,14 @@ from PIL import Image, UnidentifiedImageError
 from google.cloud import vision
 
 # Load Vision API credentials from env var (Render-safe)
-creds_raw = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
-if not creds_raw:
-    raise RuntimeError("Missing GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable")
+def get_vision_client():
+    creds_raw = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
+    if not creds_raw:
+        raise RuntimeError("Missing GOOGLE_APPLICATION_CREDENTIALS_JSON")
 
-try:
     creds_info = json.loads(creds_raw)
-except Exception as e:
-    raise RuntimeError("Invalid JSON in GOOGLE_APPLICATION_CREDENTIALS_JSON") from e
+    return vision.ImageAnnotatorClient.from_service_account_info(creds_info)
 
-vision_client = vision.ImageAnnotatorClient.from_service_account_info(creds_info)
 
 # import parser helpers (extract) and sheets helper (append)
 try:
@@ -113,7 +111,9 @@ def ocr_image(img_path: Path) -> str:
             content = image_file.read()
 
         image = vision.Image(content=content)
-        response = vision_client.text_detection(image=image)
+        
+        client = get_vision_client()
+        response = client.text_detection(image=image)
 
         if response.error.message:
             logging.error(f"Vision API error: {response.error.message}")
@@ -150,7 +150,9 @@ def ocr_pdf(pdf_path: Path) -> str:
             img_bytes.seek(0)
 
             image = vision.Image(content=img_bytes.read())
-            response = vision_client.text_detection(image=image)
+            
+            client = get_vision_client()
+            response = client.text_detection(image=image)
 
             if response.error.message:
                 logging.error(f"Vision API error on page {i}: {response.error.message}")
